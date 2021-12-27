@@ -41,7 +41,15 @@ public class Categoria implements Serializable{
 		this.id = id;
 		this.nome = nome;
 	}
+	
+	public Categoria() {
+		
+	}
+	
 	//Getters e setters
+
+
+
 
 	public Long getId() {
 		return id;

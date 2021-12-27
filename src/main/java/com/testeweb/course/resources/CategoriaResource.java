@@ -1,26 +1,30 @@
 package com.testeweb.course.resources;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testeweb.course.domain.Categoria;
+import com.testeweb.course.services.CategoriaService;
 
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
 	
+	@Autowired
+	private CategoriaService categoriaService; 
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Categoria> listar() {
-		Categoria cat1 = new Categoria( 1l  ,"informatica");
-		Categoria cat2 = new Categoria( 2l  ,"escritorio");
-		List<Categoria> lista = new ArrayList<>();
-		lista.add(cat1);
-		lista.add(cat2);
-		return lista;
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Categoria> buscarId(@PathVariable Long id) {
+		Categoria cat = categoriaService.buscar(id);
+		return ResponseEntity.ok().body(cat);
 	}
+
 }

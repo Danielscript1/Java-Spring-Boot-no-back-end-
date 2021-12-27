@@ -25,7 +25,7 @@ public class Produto implements Serializable{
 	o Construtores (não inclua coleções no construtor com parâmetros)
 	o Getters e setters
 	o hashCode e equals (implementação padrão: somente id)
-	o Serializable (padrão: 1L)  = e uma interface que falar que os objetos dela pode ser convetidos em bytes
+	o Serializable   = e uma interface que falar que os objetos dela pode ser convetidos em bytes
 	 * */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
@@ -47,7 +47,13 @@ public class Produto implements Serializable{
 		this.nome = nome;
 		this.preco = preco;
 	}
+	public Produto() {
+		
+	}
+
 	
+
+
 	//Getters e setters
 	public Long getId() {
 		return id;
