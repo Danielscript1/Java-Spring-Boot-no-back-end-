@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.testeweb.course.domain.enums.TipoCliente;
 @Entity
 public class Cliente implements Serializable{
@@ -61,6 +62,7 @@ public class Cliente implements Serializable{
 	
 	//associacao com endereco
 	@OneToMany(mappedBy = "cliente")
+	@JsonManagedReference //anotacao que tras os associados aquela classe
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	//fim das associaçoes

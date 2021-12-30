@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Endereco implements Serializable {
 
@@ -39,9 +42,11 @@ public class Endereco implements Serializable {
 	//associaçoes
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
+	@JsonBackReference // ela informa que ja esta associado a chamada e ignora a associacao
 	private Cliente cliente;
 	@ManyToOne
 	@JoinColumn(name="cidade_id")
+	@JsonIgnore
 	private Cidade cidade;
 	
 	//construtores
