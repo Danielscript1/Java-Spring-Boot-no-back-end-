@@ -10,16 +10,14 @@ import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.testeweb.course.domain.enums.TipoCliente;
+
 @Entity
 public class Cliente implements Serializable{
 	/**
@@ -47,7 +45,7 @@ public class Cliente implements Serializable{
 	/*
 	 *macete, ela vai ser armazenada interno como um intero, mas externamente vai expor um dado do tipo cliente  
 	 * */
-	
+	//TIPO ENUMAREADO
 	private Integer tipo;
 	
 	/*associacao com telefone ->
@@ -64,6 +62,10 @@ public class Cliente implements Serializable{
 	@OneToMany(mappedBy = "cliente")
 	@JsonManagedReference //anotacao que tras os associados aquela classe
 	private List<Endereco> enderecos = new ArrayList<>();
+	
+	//associação com pedido
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido>pedidos = new ArrayList<>();
 
 	//fim das associaçoes
 	
@@ -153,8 +155,15 @@ public class Cliente implements Serializable{
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
+	
 
 	//hasCode equals
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+
 
 	@Override
 	public int hashCode() {
