@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -14,7 +16,8 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.testeweb.course.domain.enums.EstadoPagamento;
 @Entity
-public class Pagamento implements Serializable{
+@Inheritance(strategy = InheritanceType.JOINED)//anotacao para definir herança InheritanceType.SINGLE_TABLE ou InheritanceType.JOINED
+public abstract class Pagamento implements Serializable{
 	/**
 	 * 
 	 */

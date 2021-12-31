@@ -1,5 +1,6 @@
 package com.testeweb.course;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.testeweb.course.domain.Cidade;
 import com.testeweb.course.domain.Cliente;
 import com.testeweb.course.domain.Endereco;
 import com.testeweb.course.domain.Estado;
+import com.testeweb.course.domain.Pagamento;
+import com.testeweb.course.domain.PagamentoComBoleto;
+import com.testeweb.course.domain.PagamentoComCartao;
+import com.testeweb.course.domain.Pedido;
 import com.testeweb.course.domain.Produto;
+import com.testeweb.course.domain.enums.EstadoPagamento;
 import com.testeweb.course.domain.enums.TipoCliente;
 import com.testeweb.course.repositories.CategoriaRepository;
 import com.testeweb.course.repositories.CidadeRepository;
 import com.testeweb.course.repositories.ClienteRepository;
 import com.testeweb.course.repositories.EnderecoRepository;
 import com.testeweb.course.repositories.EstadoRepository;
+import com.testeweb.course.repositories.PagamentoRepository;
+import com.testeweb.course.repositories.PedidoRepository;
 import com.testeweb.course.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootbackendApplication.class, args);
@@ -62,6 +74,24 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		Endereco e1 = new Endereco(null,"rua juiz carvalho","3485","novohorizonte","dirceu2","64075656",cliente1,cidade1);
 		Endereco e2 = new Endereco(null,"rua venom","6595","lugarnenhum","dirceu","4585320",cliente1,cidade2);
 		
+		
+		
+		//instancia de pedido
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null,sdf.parse("30/09/2021 10:32"),e1,cliente1);
+		Pedido ped2 = new Pedido(null,sdf.parse("30/09/2021 19:35"),e1,cliente1);
+		
+		//instancia do Pagamento
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1,6);
+		ped1.setPagamento(pagto1);//associacao ped1 com pagamento 1 -> adicionando o pagamento
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2,sdf.parse("20/10/2017 00:00"),null);
+		ped2.setPagamento(pagto2);//associacao ped2 com pagamento 2 -> adicionando o pagamento
+		
+		
+		
+		
+		
 		//associando produto na categoria
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
@@ -82,11 +112,13 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		//associando cliente ao telefone
 		cliente1.getTelefones().addAll(Arrays.asList("94848542","94290123")); 
 		
-		//associando cliente ao endereço
-		cliente1.getEnderecos().addAll(Arrays.asList(e1,e2));
 		
 		
-		
+		//associar cliente com pedido 
+		cliente1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		//pedido com endereco -> adicionando endereco
+		ped1.setEnderecoDeEntrega(e1);
+		ped2.setEnderecoDeEntrega(e2);
 		
 		//salvando no banco de Dados
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
@@ -95,6 +127,8 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(estado1,estado2));
 		cidadeRepository.saveAll(Arrays.asList(cidade1,cidade2,cidade3));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
 	}
 

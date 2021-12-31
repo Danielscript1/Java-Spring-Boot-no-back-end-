@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Pedido implements Serializable {
 	/**
@@ -38,10 +40,11 @@ public class Pedido implements Serializable {
 	private Pagamento pagamento;
 	
 	@ManyToOne
-	@JoinColumn(name="endereco_id")
+	@JoinColumn(name="endereco_de_entrega_id")
 	private Endereco enderecoDeEntrega;
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
+	@JsonBackReference // ela informa que ja esta associado a chamada e ignora a associacao
 	private Cliente cliente;
 	
 	//Construtores (não inclua coleções no construtor com parâmetros)
@@ -51,11 +54,10 @@ public class Pedido implements Serializable {
 
 	
 
-	public Pedido(Long id, Date instante, Pagamento pagamento, Endereco enderecoDeEntrega, Cliente cliente) {
+	public Pedido(Long id, Date instante, Endereco enderecoDeEntrega, Cliente cliente) {
 		
 		this.id = id;
 		this.instante = instante;
-		this.pagamento = pagamento;
 		this.enderecoDeEntrega = enderecoDeEntrega;
 		this.cliente = cliente;
 	}
