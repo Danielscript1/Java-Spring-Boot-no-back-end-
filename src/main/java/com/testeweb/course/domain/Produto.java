@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Produto implements Serializable{
 	/**
@@ -48,6 +49,7 @@ public class Produto implements Serializable{
 	private List<Categoria> categorias = new ArrayList<>();
 	
 	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto
+	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();//esse tipo de array SET , nao aceita repetição
 		
@@ -64,6 +66,7 @@ public class Produto implements Serializable{
 	}
 
 	//produto conhecer os pedido , associados a ele, entao vamos varrer essa lista
+	@JsonIgnore
 	public List<Pedido> getPedidos(){
 		List<Pedido> lista = new ArrayList<>();
 		//agora vamos percorrer minha lista de itens que ja existe,associado aqui nessa classe
