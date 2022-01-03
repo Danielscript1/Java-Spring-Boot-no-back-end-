@@ -40,7 +40,7 @@ public class Produto implements Serializable{
 	private Double preco;
 	
 	//Associações (inicie as coleções)
-	@JsonBackReference // ela informa que ja esta associado a chamada e ignora a associacao
+	@JsonIgnore
 	@ManyToMany
 	 @JoinTable(name = "PRODUTO_CATEGORIA",
 	 joinColumns = @JoinColumn(name = "produto_id"),

@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Pedido implements Serializable {
 	/**
@@ -48,7 +49,7 @@ public class Pedido implements Serializable {
 	private Endereco enderecoDeEntrega;
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
-	@JsonBackReference // ela informa que ja esta associado a chamada e ignora a associacao
+	@JsonIgnore
 	private Cliente cliente;
 	
 	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto

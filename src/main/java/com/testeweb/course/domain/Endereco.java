@@ -42,7 +42,7 @@ public class Endereco implements Serializable {
 	//associaçoes
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
-	@JsonBackReference // ela informa que ja esta associado a chamada e ignora a associacao
+	@JsonIgnore
 	private Cliente cliente;
 	@ManyToOne
 	@JoinColumn(name="cidade_id")

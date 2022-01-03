@@ -60,12 +60,10 @@ public class Cliente implements Serializable{
 	
 	//associacao com endereco
 	@OneToMany(mappedBy = "cliente")
-	@JsonManagedReference //anotacao que tras os associados aquela classe
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	//associação com pedido
 	@OneToMany(mappedBy = "cliente")
-	@JsonManagedReference //anotacao que tras os associados aquela classe
 	private List<Pedido>pedidos = new ArrayList<>();
 
 	//fim das associaçoes
