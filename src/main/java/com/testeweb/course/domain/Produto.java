@@ -2,8 +2,10 @@ package com.testeweb.course.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +46,10 @@ public class Produto implements Serializable{
 	 )
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto
+	private Set<ItemPedido> itens = new HashSet<>();//esse tipo de array SET , nao aceita repetição
+		
+	
 	//Construtores
 	public Produto(Long id, String nome, Double preco) {
 		this.id = id;
@@ -54,7 +60,15 @@ public class Produto implements Serializable{
 		
 	}
 
-	
+	//produto conhecer os pedido , associados a ele, entao vamos varrer essa lista
+	public List<Pedido> getPedidos(){
+		List<Pedido> lista = new ArrayList<>();
+		//agora vamos percorrer minha lista de itens que ja existe,associado aqui nessa classe
+		for(ItemPedido x : itens) {
+			lista.add(x.getPedido());
+		}
+		return lista;
+	}
 
 
 	//Getters e setters
@@ -85,6 +99,7 @@ public class Produto implements Serializable{
 	public List<Categoria> getCategorias() {
 		return categorias;
 	}
+	
 	
 	//hashCode e equals (implementação padrão: somente id)
 	@Override

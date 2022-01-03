@@ -2,7 +2,9 @@ package com.testeweb.course.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -46,6 +48,10 @@ public class Pedido implements Serializable {
 	@JoinColumn(name="cliente_id")
 	@JsonBackReference // ela informa que ja esta associado a chamada e ignora a associacao
 	private Cliente cliente;
+	
+	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto
+	private Set<ItemPedido> items = new HashSet<>();//esse tipo de array SET , nao aceita repetição
+	
 	
 	//Construtores (não inclua coleções no construtor com parâmetros)
 	public Pedido() {
@@ -110,6 +116,16 @@ public class Pedido implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	public Set<ItemPedido> getItems() {
+		return items;
+	}
+
+
+
+	public void setItems(Set<ItemPedido> items) {
+		this.items = items;
+	}
+	
 
 
 
@@ -129,6 +145,9 @@ public class Pedido implements Serializable {
 		Pedido other = (Pedido) obj;
 		return Objects.equals(id, other.id);
 	}
+
+
+
 	
 	
 	
