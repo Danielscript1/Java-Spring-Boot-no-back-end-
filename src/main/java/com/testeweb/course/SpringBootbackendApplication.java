@@ -13,6 +13,7 @@ import com.testeweb.course.domain.Cidade;
 import com.testeweb.course.domain.Cliente;
 import com.testeweb.course.domain.Endereco;
 import com.testeweb.course.domain.Estado;
+import com.testeweb.course.domain.ItemPedido;
 import com.testeweb.course.domain.Pagamento;
 import com.testeweb.course.domain.PagamentoComBoleto;
 import com.testeweb.course.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.testeweb.course.repositories.CidadeRepository;
 import com.testeweb.course.repositories.ClienteRepository;
 import com.testeweb.course.repositories.EnderecoRepository;
 import com.testeweb.course.repositories.EstadoRepository;
+import com.testeweb.course.repositories.ItemPedidoRepository;
 import com.testeweb.course.repositories.PagamentoRepository;
 import com.testeweb.course.repositories.PedidoRepository;
 import com.testeweb.course.repositories.ProdutoRepository;
@@ -48,6 +50,8 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootbackendApplication.class, args);
@@ -89,8 +93,11 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		ped2.setPagamento(pagto2);//associacao ped2 com pagamento 2 -> adicionando o pagamento
 		
 		
-		
-		
+		//instancia ItemPedido 
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+				
 		
 		//associando produto na categoria
 		
@@ -114,11 +121,27 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		
 		
 		
+	
+		
+		
 		//associar cliente com pedido 
 		cliente1.getPedidos().addAll(Arrays.asList(ped1,ped2));
 		//pedido com endereco -> adicionando endereco
 		ped1.setEnderecoDeEntrega(e1);
 		ped2.setEnderecoDeEntrega(e2);
+		
+		/*cada pedido conhecer seus itens*/
+		//associação  pedido com items
+		ped1.getItems().addAll(Arrays.asList(ip1,ip2));
+		//associação pedido com itens
+		ped2.getItems().addAll(Arrays.asList(ip3));
+		
+		/*cada produto conhecendo seu itens*/
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		
 		
 		//salvando no banco de Dados
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
@@ -129,6 +152,8 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		itemRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
+		
 		
 	}
 

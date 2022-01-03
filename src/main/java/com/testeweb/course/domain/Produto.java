@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
@@ -47,8 +48,10 @@ public class Produto implements Serializable{
 	private List<Categoria> categorias = new ArrayList<>();
 	
 	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto
+	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();//esse tipo de array SET , nao aceita repetição
 		
+	
 	
 	//Construtores
 	public Produto(Long id, String nome, Double preco) {
@@ -72,6 +75,13 @@ public class Produto implements Serializable{
 
 
 	//Getters e setters
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -3,8 +3,11 @@ package com.testeweb.course.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.testeweb.course.domain.pk.ItemPedidoPK;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 
+import com.testeweb.course.domain.pk.ItemPedidoPK;
+@Entity
 public class ItemPedido implements Serializable {
 	/**
 	 * 
@@ -20,6 +23,7 @@ public class ItemPedido implements Serializable {
 	o Serializable   = e uma interface que falar que os objetos dela pode ser convetidos em bytes
 	 * */
 	//referencia a tabela com id ->chave composta	
+	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 	private Double desconto;
 	private Integer quantidade;
@@ -105,6 +109,9 @@ public class ItemPedido implements Serializable {
 		ItemPedido other = (ItemPedido) obj;
 		return Objects.equals(id, other.id);
 	}
+
+
+	
 
 
 	

@@ -50,6 +50,7 @@ public class Pedido implements Serializable {
 	private Cliente cliente;
 	
 	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto
+	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> items = new HashSet<>();//esse tipo de array SET , nao aceita repetição
 	
 	
@@ -116,6 +117,7 @@ public class Pedido implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
 	public Set<ItemPedido> getItems() {
 		return items;
 	}
