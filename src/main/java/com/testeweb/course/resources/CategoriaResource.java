@@ -1,10 +1,12 @@
 package com.testeweb.course.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,7 +26,15 @@ public class CategoriaResource {
 	@Autowired
 	private CategoriaService categoriaService; 
 	
+	//listando todas as categorias
+	@GetMapping
+	public ResponseEntity<List<Categoria>> findAll() {
+		List<Categoria> list = categoriaService.findAll();
+		return ResponseEntity.ok().body(list);
+	}
 	
+	
+	//pesquisando por Id
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Long id) {
 		Categoria cat = categoriaService.find(id);

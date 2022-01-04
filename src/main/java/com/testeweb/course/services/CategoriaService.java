@@ -1,5 +1,6 @@
 package com.testeweb.course.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
-	//buscar categoria
+	//buscar todas as categoria
 	
 	public Categoria find(Long id) {
 	Optional<Categoria> cat = categoriaRepository.findById(id); //pode haver ou não um objeto com id correpodente
@@ -51,6 +52,11 @@ public class CategoriaService {
 		}catch(DataIntegrityViolationException e) {
 			throw new com.testeweb.course.services.exception.DataIntegrityViolationException("não e possivel excluir uma categoria que possui produtos");
 		}
+	}
+	//listando todas as categorias
+	public List<Categoria> findAll() {
+		
+		return categoriaRepository.findAll();
 	}
 
 	
