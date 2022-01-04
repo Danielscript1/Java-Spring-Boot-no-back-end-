@@ -2,6 +2,7 @@ package com.testeweb.course.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.testeweb.course.domain.Categoria;
+import com.testeweb.course.dto.CategoriaDTO;
 import com.testeweb.course.services.CategoriaService;
 
 @RestController
@@ -28,9 +30,22 @@ public class CategoriaResource {
 	
 	//listando todas as categorias
 	@GetMapping
-	public ResponseEntity<List<Categoria>> findAll() {
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> list = categoriaService.findAll();
-		return ResponseEntity.ok().body(list);
+		//converter minha lista recebida , para dto, buscando os paramentros desejados
+		/*
+		 * Quando usar MAP em java?
+		Essa interface é um objeto que mapeia valores para chaves,
+		ou seja, através da chave consegue ser acessado o valor configurado,
+		sendo que a chave não pode ser repetida ao contrário do valor,
+		mas se caso tiver uma chave repetida é sobrescrito pela última chamada. Também faz parte do pacote java.
+		 * 
+		 * */
+		
+		List<CategoriaDTO> listDto = list.stream().map(
+		 obj -> new CategoriaDTO(obj)		
+				).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	
