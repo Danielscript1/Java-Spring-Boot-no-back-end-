@@ -29,4 +29,10 @@ public class CategoriaService {
 	return cat.orElseThrow(() -> new ObjectNotFoundException( //lançar minha exception pensonalizada
 			 "Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
+	
+	//metodo de inserir
+	public Categoria insert(Categoria obj) {
+		obj.setId(null);// vai considerar que estou inserindo um dados, pois se o ID, nao for nulo ele considerar que vai ser uma atualização
+		return categoriaRepository.save(obj);
+	}
 }
