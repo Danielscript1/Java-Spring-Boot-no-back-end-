@@ -17,7 +17,7 @@ public class PedidoService {
 	
 	//buscar categoria
 	
-	public Pedido buscar(Long id) {
+	public Pedido find(Long id) {
 	Optional<Pedido> pedido = pedidoRepository.findById(id); //pode haver ou não um objeto com id correpodente
 	
 	/*Checklist de tratamento de exceção de id inválido:

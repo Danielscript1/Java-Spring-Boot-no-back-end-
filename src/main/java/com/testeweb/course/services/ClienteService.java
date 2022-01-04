@@ -17,7 +17,7 @@ public class ClienteService {
 	
 	//buscar categoria
 	
-	public Cliente buscar(Long id) {
+	public Cliente find(Long id) {
 	Optional<Cliente> cliente = clienteRepository.findById(id); //pode haver ou não um objeto com id correpodente
 	
 	/*Checklist de tratamento de exceção de id inválido:

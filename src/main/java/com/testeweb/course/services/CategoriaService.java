@@ -17,7 +17,7 @@ public class CategoriaService {
 	
 	//buscar categoria
 	
-	public Categoria buscar(Long id) {
+	public Categoria find(Long id) {
 	Optional<Categoria> cat = categoriaRepository.findById(id); //pode haver ou não um objeto com id correpodente
 	
 	/*Checklist de tratamento de exceção de id inválido:
@@ -35,4 +35,12 @@ public class CategoriaService {
 		obj.setId(null);// vai considerar que estou inserindo um dados, pois se o ID, nao for nulo ele considerar que vai ser uma atualização
 		return categoriaRepository.save(obj);
 	}
+	
+	//ataulizar
+	public Categoria update( Categoria obj,Long id) {
+		find(obj.getId());//lançar minha exercption pensonalizada do metodo find 
+		return categoriaRepository.save(obj);
+	}
+
+	
 }

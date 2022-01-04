@@ -21,7 +21,7 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> buscarId(@PathVariable Long id) {
-		Cliente cliente = clienteService.buscar(id);
+		Cliente cliente = clienteService.find(id);
 		return ResponseEntity.ok().body(cliente);
 	}
 

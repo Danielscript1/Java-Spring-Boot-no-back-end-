@@ -7,5 +7,9 @@ import com.testeweb.course.domain.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria,Long>{
+
+	
+
+	
 	
 }
