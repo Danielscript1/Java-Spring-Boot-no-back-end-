@@ -2,12 +2,13 @@ package com.testeweb.course.services;
 
 import java.util.Optional;
 
-import com.testeweb.course.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.testeweb.course.domain.Categoria;
 import com.testeweb.course.repositories.CategoriaRepository;
+import com.testeweb.course.services.exception.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -36,10 +37,20 @@ public class CategoriaService {
 		return categoriaRepository.save(obj);
 	}
 	
-	//ataulizar
+	//atualizar
 	public Categoria update( Categoria obj,Long id) {
 		find(obj.getId());//lançar minha exercption pensonalizada do metodo find 
 		return categoriaRepository.save(obj);
+	}
+	
+	//deletar
+	public void delete(Long id) {
+		try {
+		find(id);//verifcar se esse id existe
+	    categoriaRepository.deleteById(id);
+		}catch(DataIntegrityViolationException e) {
+			throw new com.testeweb.course.services.exception.DataIntegrityViolationException("não e possivel excluir uma categoria que possui produtos");
+		}
 	}
 
 	
