@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.testeweb.course.domain.Categoria;
+import com.testeweb.course.domain.Cliente;
 import com.testeweb.course.dto.CategoriaDTO;
 import com.testeweb.course.repositories.CategoriaRepository;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
@@ -44,10 +45,18 @@ public class CategoriaService {
 	
 	//atualizar
 	public Categoria update( Categoria obj,Long id) {
-		find(obj.getId());//lançar minha exercption pensonalizada do metodo find 
-		return categoriaRepository.save(obj);
+		//instancia um cliente apartir do banco de dados, para ele trazer os objetos ja existente ,junto com dto
+		Categoria newObj = find(obj.getId());//pegar meus dados do banco
+		updateData(newObj,obj);//atualizar meus dados com base nos dados que vieram do obj
+		return categoriaRepository.save(newObj);
 	}
-	
+	//metodo auxiliar do update
+	private void updateData(Categoria newObj, Categoria obj) {
+		//atualizar meu newObj com base nesse novos obj
+		newObj.setNome(obj.getNome());
+		
+	}
+
 	//deletar
 	public void delete(Long id) {
 		try {
