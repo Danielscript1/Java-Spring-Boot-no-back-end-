@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,8 +64,10 @@ public class CategoriaResource {
 	
 	//insert processo de execução
 	@PostMapping
-	public ResponseEntity<Categoria> insert(@RequestBody Categoria obj){ //anotacao REquestBody , faz que o json seja convertido para objeto java
-		 obj = categoriaService.insert(obj);
+	public ResponseEntity<Categoria> insert(@Validated @RequestBody CategoriaDTO  objDto){ //anotacao REquestBody , faz que o json seja convertido para objeto java
+		//antes de chmar meu metodo insert, tenho que converter meu obj dto para um tipo de entity
+		Categoria obj = categoriaService.fromDto(objDto);
+		obj = categoriaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 		.path("/{id}").buildAndExpand(obj.getId()).toUri(); //estou pegando o caminho na url e construindo um novo junto com id que vai ser criado
 		return ResponseEntity.created(uri).build();
@@ -72,7 +75,8 @@ public class CategoriaResource {
 	
 	//atualizando categoria
 	@PutMapping(value="/{id}")
-	public ResponseEntity<Categoria> update(@RequestBody Categoria obj,@PathVariable Long id) {
+	public ResponseEntity<Categoria> update(@Validated @RequestBody CategoriaDTO objDto,@PathVariable Long id) {
+		Categoria obj = categoriaService.fromDto(objDto);
 		obj.setId(id);//garantiar que vem o id desejado 
 		obj = categoriaService.update(obj, obj.getId());
 		return ResponseEntity.noContent().build();

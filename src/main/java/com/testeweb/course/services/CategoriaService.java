@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.testeweb.course.domain.Categoria;
+import com.testeweb.course.dto.CategoriaDTO;
 import com.testeweb.course.repositories.CategoriaRepository;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
 
@@ -69,6 +70,11 @@ public class CategoriaService {
 		return categoriaRepository.findAll(pageRequest);
 	}
 	
+	//metodo de conversao , apartir de um objDTO que recebir la do resource , vou converter para obj categoria
+	public Categoria fromDto(CategoriaDTO  objDto) {
+		return new Categoria(objDto.getId(),objDto.getNome());
+		
+	}
 
 	
 }
