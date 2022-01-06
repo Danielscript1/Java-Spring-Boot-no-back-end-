@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -59,7 +60,7 @@ public class Cliente implements Serializable{
 
 	
 	//associacao com endereco
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL) //como apagar elementos associando com o mesmo
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	//associação com pedido
