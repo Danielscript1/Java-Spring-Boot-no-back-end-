@@ -2,6 +2,13 @@ package com.testeweb.course.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.testeweb.course.services.validation.ClienteInsert;
+@ClienteInsert //anotação customizada, uma validação que vai selecionar CpfouCnpj,dependedo do tipo, vai ser uma anotação da classe
 public class ClienteNewDTO  implements Serializable{
 
 	/**
@@ -9,8 +16,12 @@ public class ClienteNewDTO  implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	//PARTE DO CLIENTE
+	@NotEmpty(message = "Preenchimento do campo obrigatorio")
+	@Length(min=5,max=80,message = "o tamanho deve ser entre 5 e 80 caractere")
 	private String nome;
+	@Email(message = "Email, não pode esta em Branco!")
 	private String email;
+	@NotEmpty(message = "Preenchimento do campo obrigatorio")
 	private String cpfOuCnpj;
 	private Integer tipo;
 	//PARTE DO ENDERECO
@@ -20,6 +31,7 @@ public class ClienteNewDTO  implements Serializable{
 	private String bairro;
 	private String cep;
 	//PARTE DO TELEFONE
+	@NotEmpty(message = "Preenchimento do campo obrigatorio")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
