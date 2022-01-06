@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import com.testeweb.course.domain.Categoria;
 import com.testeweb.course.domain.Cliente;
+import com.testeweb.course.services.validation.ClienteUpdate;
 
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+@ClienteUpdate
 public class ClienteDTO  implements Serializable{
 	/**
 	 * 
