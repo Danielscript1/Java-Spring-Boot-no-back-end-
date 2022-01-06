@@ -9,20 +9,25 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.testeweb.course.domain.Cidade;
 import com.testeweb.course.domain.Cliente;
-import com.testeweb.course.domain.Cliente;
+import com.testeweb.course.domain.Endereco;
+import com.testeweb.course.domain.enums.TipoCliente;
 import com.testeweb.course.dto.ClienteDTO;
-import com.testeweb.course.dto.ClienteDTO;
+import com.testeweb.course.dto.ClienteNewDTO;
 import com.testeweb.course.repositories.ClienteRepository;
+import com.testeweb.course.repositories.EnderecoRepository;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
-
 @Service
 public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	//buscar cliente
 	
 	public Cliente find(Long id) {
@@ -36,6 +41,15 @@ public class ClienteService {
 	
 	return cliente.orElseThrow(() -> new ObjectNotFoundException( //lançar minha exception pensonalizada
 			 "Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+	}
+	
+	// essa anotação vai garantir , que ele vai salvar tanto os cliente como o endereco na mesma transação no banco de dados
+	@Transactional
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		obj = clienteRepository.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 	
 	//atualizar
@@ -81,5 +95,28 @@ public class ClienteService {
 			return new Cliente(objDto.getId(),objDto.getNome(), objDto.getEmail(), null, null);
 			
 			
+		}
+		//metodo de conversao , apartir de um objDTO que recebir la do resource , vou converter para obj cliente
+		public Cliente fromDto(ClienteNewDTO objDto) {
+			// cliente
+			Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+			//cidade
+			Cidade cidade = new Cidade(objDto.getCidadeId(),null,null);
+			//Endereco
+			Endereco end = new Endereco(null,objDto.getLogradouro(),objDto.getNumero(),objDto.getComplemento(),objDto.getBairro(),objDto.getCep(),cliente,cidade);
+			//adicionando as associaçoes
+			cliente.getEnderecos().add(end);
+			
+			cliente.getTelefones().add(objDto.getTelefone1());
+			//fazendo um teste de verificação
+			if(objDto.getTelefone2() != null) {
+				cliente.getTelefones().add(objDto.getTelefone2());
+			}
+			if(objDto.getTelefone3() != null) {
+				cliente.getTelefones().add(objDto.getTelefone3());
+			}
+			
+			//retorna cliente;
+			return cliente;
 		}
 }
