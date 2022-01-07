@@ -13,6 +13,7 @@ public class ProdutoDTO  implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Long id;
 	private String nome;
 	private Double preco;
 	private List<Categoria> categorias = new ArrayList<>();
@@ -20,10 +21,24 @@ public class ProdutoDTO  implements Serializable{
 	
 	
 	public ProdutoDTO() {
-		super();
+		
+	}
+	
+	public ProdutoDTO(Produto obj) {
+		this.id = obj.getId();
+		this.nome = obj.getNome();
+		this.preco = obj.getPreco();
 	}
 
 	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return nome;
@@ -55,8 +70,6 @@ public class ProdutoDTO  implements Serializable{
 
 
 
-	public ProdutoDTO(Produto obj) {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 }

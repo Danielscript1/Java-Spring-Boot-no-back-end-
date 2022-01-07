@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.testeweb.course.domain.Categoria;
 import com.testeweb.course.domain.Produto;
+import com.testeweb.course.dto.ProdutoDTO;
 import com.testeweb.course.repositories.CategoriaRepository;
 import com.testeweb.course.repositories.ProdutoRepository;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
@@ -58,6 +59,6 @@ public class ProdutoService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
 		//implementar minha lista,que buscar meus id , lá do banco
 		List<Categoria> categorias = categoriaRepository.findAllById(ids);//vou isntancia com os ids que estão no banco
-		return produtoRepository.search(nome,categorias,pageRequest);
+		return produtoRepository.findDistinctByNomeContainingAndCategoriasIn(nome,categorias,pageRequest);
 	}
 }
