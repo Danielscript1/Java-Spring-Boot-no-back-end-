@@ -131,6 +131,14 @@ public class Pedido implements Serializable {
 		this.items = items;
 	}
 	
+	//total do pedido
+	public Double getValorTotal() {
+		Double soma = 0.0;
+		for(ItemPedido ip : items) {
+			soma = soma + ip.getSuperTotal();
+		}
+		return soma;
+	}
 
 
 
