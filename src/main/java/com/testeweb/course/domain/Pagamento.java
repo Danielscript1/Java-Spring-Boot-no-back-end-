@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -14,9 +12,11 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.testeweb.course.domain.enums.EstadoPagamento;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)//anotacao para definir herança InheritanceType.SINGLE_TABLE ou InheritanceType.JOINED
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") //esta informando que minha classe pagamento , vai ter um campo adicional que chamar @type
 public abstract class Pagamento implements Serializable{
 	/**
 	 * 

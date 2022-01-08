@@ -1,11 +1,18 @@
 package com.testeweb.course.services;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.testeweb.course.domain.ItemPedido;
+import com.testeweb.course.domain.PagamentoComBoleto;
 import com.testeweb.course.domain.Pedido;
+import com.testeweb.course.domain.enums.EstadoPagamento;
+import com.testeweb.course.repositories.ItemPedidoRepository;
+import com.testeweb.course.repositories.PagamentoRepository;
 import com.testeweb.course.repositories.PedidoRepository;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
 
@@ -14,7 +21,15 @@ public class PedidoService {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	@Autowired
+	private BoletoService boletoService;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
+	@Autowired
+	private ProdutoService produtoService;
 	//buscar categoria
 	
 	public Pedido find(Long id) {
@@ -28,5 +43,32 @@ public class PedidoService {
 	
 	return pedido.orElseThrow(() -> new ObjectNotFoundException( //lançar minha exception pensonalizada
 			 "Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
+	}
+	 @Transactional
+	public Pedido insert(Pedido obj) {
+		obj.setId(null);//garantir que estou inserindo um novo pedido
+		obj.setInstante(new Date()); //setado data do pedido 
+		//setando o estado do pagamento
+		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
+		//associação de mao dupla , o pagamento tem que conhecer o pedido dele
+		obj.getPagamento().setPedido(obj);
+		//se o pagamento for com boleto
+		if(obj.getPagamento() instanceof PagamentoComBoleto) {
+			PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
+			boletoService.preencherPagamanetoComBoleto(pagto,obj.getInstante());
+		}
+		//salvando pedido
+		obj = pedidoRepository.save(obj);
+		pagamentoRepository.save(obj.getPagamento());//salvando pagamento
+		
+		//salvando itemPedido
+		for (ItemPedido ip : obj.getItems()) {
+			ip.setDesconto(0.0);
+			ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco());
+			ip.setPedido(obj);
+		}
+		itemPedidoRepository.saveAll(obj.getItems());
+		
+		return obj;
 	}
 }

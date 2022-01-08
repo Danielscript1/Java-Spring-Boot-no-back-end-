@@ -37,6 +37,11 @@ public class ProdutoService {
 		
 	}
 	
+	public Produto find(Long id) {
+		Optional<Produto> obj = produtoRepository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Produto.class.getName()));
+	}
 	
 	//adicionando paginação
 	public Page<Produto>findPage(Integer page, Integer linesPerPage, String orderBy, String direction){

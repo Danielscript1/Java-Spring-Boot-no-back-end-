@@ -50,11 +50,18 @@ public class ItemPedido implements Serializable {
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
+	//para associar o itempedido ,ao pedido
+	public void setPedido(Pedido pedido) {
+		id.setPedido(pedido);
+	}
 	
 	public Produto getProduto() {
 		return id.getProduto();
 	}
-
+	//associar o itemproduto , ao produto
+	public void setProduto(Produto produto) {
+		id.setProduto(produto);
+	}
 	public ItemPedidoPK getId() {
 		return id;
 	}
@@ -96,7 +103,7 @@ public class ItemPedido implements Serializable {
 	
 	//calculo do subTotal Item pedido
 	public Double getSuperTotal() {
-		return ( getPreco() - getDesconto()  ) * getQuantidade();
+		return ( preco - desconto ) * quantidade;
 	}
 
 	@Override
