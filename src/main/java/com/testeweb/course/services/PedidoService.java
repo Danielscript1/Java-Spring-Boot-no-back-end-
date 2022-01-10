@@ -32,6 +32,8 @@ public class PedidoService {
 	private ClienteService clienteService;
 	@Autowired
 	private ProdutoService produtoService;
+	@Autowired
+	private EmailService emailService;
 	//buscar categoria
 	
 	public Pedido find(Long id) {
@@ -72,7 +74,7 @@ public class PedidoService {
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.saveAll(obj.getItems());
-		System.out.println(obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 }
