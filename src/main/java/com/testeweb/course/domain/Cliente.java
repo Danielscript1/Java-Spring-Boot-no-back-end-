@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Columns;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.testeweb.course.domain.enums.TipoCliente;
 
@@ -69,6 +70,7 @@ public class Cliente implements Serializable{
 	
 	//associação com pedido
 	@OneToMany(mappedBy = "cliente")
+	@JsonIgnore
 	private List<Pedido>pedidos = new ArrayList<>();
 
 	//fim das associaçoes

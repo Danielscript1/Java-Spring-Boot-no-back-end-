@@ -1,6 +1,7 @@
 package com.testeweb.course.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -49,7 +50,6 @@ public class Pedido implements Serializable {
 	private Endereco enderecoDeEntrega;
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
-	@JsonIgnore
 	private Cliente cliente;
 	
 	//associação do tipo chave composta, pedido faz referencia a tabela auxiliar itemPedido, para se comunicar com Produto
@@ -144,7 +144,10 @@ public class Pedido implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
@@ -156,11 +159,40 @@ public class Pedido implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Pedido other = (Pedido) obj;
-		return Objects.equals(id, other.id);
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 
 
+	@Override
+	public String toString() {
+		//formatar data
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Pedido numero: ");
+		builder.append(getId());
+		builder.append(", instante: ");
+		builder.append(sdf.format(getInstante()));
+		builder.append(", cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", situação do pagamento: ");
+		builder.append(getPagamento().getEstado().getDescricao());
+		builder.append("\n Detalhes: \n");
+		for(ItemPedido ip: getItems()) {
+			builder.append(ip.toString());
+		}
+		builder.append("valor total: ");
+		builder.append(getValorTotal());
+		return builder.toString();
+	}
+
+
+	
 	
 	
 	

@@ -34,7 +34,7 @@ public class PedidoResource {
 	
 	//insert processo de execução
 	@PostMapping
-	public ResponseEntity<Categoria> insert(@Validated @RequestBody Pedido  obj){ //anotacao REquestBody , faz que o json seja convertido para objeto java
+	public ResponseEntity<Void> insert(@Validated @RequestBody Pedido  obj){ //anotacao REquestBody , faz que o json seja convertido para objeto java
 		
 		obj = pedidoService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

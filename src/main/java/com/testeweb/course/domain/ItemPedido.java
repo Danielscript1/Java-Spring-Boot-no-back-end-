@@ -1,6 +1,9 @@
 package com.testeweb.course.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.persistence.EmbeddedId;
@@ -124,7 +127,26 @@ public class ItemPedido implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	//tostring
+	@Override
+	public String toString() {
+		//criar uma intancia de dinheiro, obs classe propria do java, para formatações
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append(getProduto().getNome());
+		builder.append(", Qte: ");
+		builder.append(getQuantidade());
+		builder.append(", Preço unitario: ");
+		builder.append(nf.format(getPreco()));
+		builder.append(", SubTotal: ");
+		builder.append(nf.format(getSuperTotal()));
+		builder.append("\n");
+		return builder.toString();
+	}
 
+	
+
+	
 	
 
 
