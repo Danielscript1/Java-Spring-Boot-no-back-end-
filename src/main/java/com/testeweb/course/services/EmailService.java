@@ -1,5 +1,7 @@
 package com.testeweb.course.services;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 
 import com.testeweb.course.domain.Pedido;
@@ -10,4 +12,10 @@ public interface EmailService {
 	
 	//prepara o email
 	void sendEmail(SimpleMailMessage msg);
+	
+	//confirmação de recebimento de email
+	void sendOrderConfirmationHtmlEmail(Pedido obj);
+	
+	//email pensonalizado
+	void sendHtmlEmail(MimeMessage msg); 
 }
