@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.testeweb.course.services.EmailService;
 import com.testeweb.course.services.MockEmailService;
+import com.testeweb.course.services.SmtpEmailService;
 
 @Configuration
 public class TestConfig {
@@ -17,10 +18,13 @@ public class TestConfig {
 	 * 
 	 * 
 	 * */
-	
+//	
+//	@Bean
+//	public EmailService emailService() {
+//		return new MockEmailService();
+//	}
 	@Bean
 	public EmailService emailService() {
-		return new MockEmailService();
+		return new SmtpEmailService();
 	}
-	
 }
