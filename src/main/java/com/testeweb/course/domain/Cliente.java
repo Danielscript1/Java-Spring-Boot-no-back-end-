@@ -53,6 +53,8 @@ public class Cliente implements Serializable{
 	 * */
 	//TIPO ENUMAREADO
 	private Integer tipo;
+	@JsonIgnore
+	private String senha;
 	
 	/*associacao com telefone ->
 	 *  como e uma entidade fraca não precisamos implementar a classe telefone,
@@ -82,12 +84,13 @@ public class Cliente implements Serializable{
 
 
 
-	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipo,String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = (tipo == null)?null : tipo.getCod();//criar essa verificação , operador ternario
+		this.senha = senha;
 	}
 
 	//Getters e setters
@@ -163,13 +166,25 @@ public class Cliente implements Serializable{
 	}
 	
 
-	//hasCode equals
+	
 
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
 
 
+
+	public String getSenha() {
+		return senha;
+	}
+
+
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	//hasCode equals
 
 	@Override
 	public int hashCode() {

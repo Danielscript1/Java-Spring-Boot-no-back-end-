@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.testeweb.course.domain.Categoria;
 import com.testeweb.course.domain.Cidade;
@@ -53,6 +54,8 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
 	private ItemPedidoRepository itemRepository;
+	@Autowired
+	private  BCryptPasswordEncoder be;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootbackendApplication.class, args);
@@ -75,7 +78,7 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		Cidade cidade3 = new Cidade (null,"campinas", estado2);
 		
 		//instancia do cliente e Endereco e cidade
-		Cliente cliente1 = new Cliente(null,"maria silva","danielsousadelira@gmail.com","05630489965",TipoCliente.toEnum(1));
+		Cliente cliente1 = new Cliente(null,"maria silva","danielsousadelira@gmail.com","05630489965",TipoCliente.toEnum(1),be.encode("sabrina"));
 		Endereco e1 = new Endereco(null,"rua juiz carvalho","3485","novohorizonte","dirceu2","64075656",cliente1,cidade1);
 		Endereco e2 = new Endereco(null,"rua venom","6595","lugarnenhum","dirceu","4585320",cliente1,cidade2);
 		

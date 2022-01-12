@@ -21,6 +21,8 @@ public class ClienteNewDTO  implements Serializable{
 	private String nome;
 	@Email(message = "Email, não pode esta em Branco!")
 	private String email;
+	@Email(message = "Email, não pode esta em Branco!")
+	private String senha;
 	@NotEmpty(message = "Preenchimento do campo obrigatorio")
 	private String cpfOuCnpj;
 	private Integer tipo;
@@ -155,6 +157,14 @@ public class ClienteNewDTO  implements Serializable{
 
 	public void setCidadeId(Long cidadeId) {
 		this.cidadeId = cidadeId;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
 	

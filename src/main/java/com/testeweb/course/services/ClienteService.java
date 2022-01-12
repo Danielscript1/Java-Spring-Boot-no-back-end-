@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class ClienteService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	//buscar cliente
+	@Autowired
+	private  BCryptPasswordEncoder be;
 	
 	public Cliente find(Long id) {
 	Optional<Cliente> cliente = clienteRepository.findById(id); //pode haver ou não um objeto com id correpodente
@@ -92,14 +95,14 @@ public class ClienteService {
 	
 	//metodo de conversao , apartir de um objDTO que recebir la do resource , vou converter para obj cliente
 		public Cliente fromDto(ClienteDTO  objDto) {
-			return new Cliente(objDto.getId(),objDto.getNome(), objDto.getEmail(), null, null);
+			return new Cliente(objDto.getId(),objDto.getNome(), objDto.getEmail(), null, null,null);
 			
 			
 		}
 		//metodo de conversao , apartir de um objDTO que recebir la do resource , vou converter para obj cliente
 		public Cliente fromDto(ClienteNewDTO objDto) {
 			// cliente
-			Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+			Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()),be.encode(objDto.getSenha()));
 			//cidade
 			Cidade cidade = new Cidade(objDto.getCidadeId(),null,null);
 			//Endereco
