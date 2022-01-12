@@ -30,7 +30,8 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 	//criar outro vetor , com os caminhos somente de leitura, para usuario sem permissão de autenticação
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			"/produtos/**",
-			"/categorias/**"
+			"/categorias/**",
+			"/clientes/**"
 	};
 	
 	//metodo de configuração de liberação

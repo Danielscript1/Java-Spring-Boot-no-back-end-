@@ -2,25 +2,26 @@ package com.testeweb.course.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Columns;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.testeweb.course.domain.enums.Perfil;
 import com.testeweb.course.domain.enums.TipoCliente;
 
 @Entity
@@ -64,8 +65,13 @@ public class Cliente implements Serializable{
 	@ElementCollection
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
-
 	
+	/*Um atributo correspondente aos perfis do usuário a serem armazenados na base de dados 
+	 * coloca EAGER, AUTOMATICAMENTE BUSCAR O CLIENTE ,GARANTIR QUE VEM OS PERFIL
+	 * */
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
 	//associacao com endereco
 	@OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL) //como apagar elementos associando com o mesmo
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -79,7 +85,8 @@ public class Cliente implements Serializable{
 	
 	//construtores
 	public Cliente() {
-		
+		//Incluir perfil padrão (CLIENTE) na instanciação de Cliente ,todo perfil por padrão vai ser um cliente
+		addPerfil(Perfil.CLIENTE);
 	}
 
 
@@ -91,6 +98,7 @@ public class Cliente implements Serializable{
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = (tipo == null)?null : tipo.getCod();//criar essa verificação , operador ternario
 		this.senha = senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	//Getters e setters
@@ -128,8 +136,14 @@ public class Cliente implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
+	//percorrer essa coleção, convertendo todo mundo,para o tipo enumerado perfil
+	 public Set<Perfil> getPerfis() {
+		 return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	 }
+	 //metodo para adicionar o perfil,passo um perfil como argumento e esse metodo adicionar um perfil
+	 public void addPerfil(Perfil perfil) {
+		 perfis.add(perfil.getCod());
+	 }
 
 	public String getCpfOuCnpj() {
 		return cpfOuCnpj;
