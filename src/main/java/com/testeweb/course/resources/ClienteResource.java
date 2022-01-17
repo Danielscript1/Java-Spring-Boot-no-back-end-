@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class ClienteResource {
 	private ClienteService clienteService; 
 	
 	//buscar cliente pelo Id
+	@PreAuthorize("hasAnyRole('ADMIN')") 
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> buscarId(@PathVariable Long id) {
 		Cliente cliente = clienteService.find(id);
@@ -62,6 +64,7 @@ public class ClienteResource {
 		}
 		
 		//deletar
+		@PreAuthorize("hasAnyRole('ADMIN')") 
 		@DeleteMapping(value="/{id}")
 		public ResponseEntity<Cliente> deletar(@PathVariable Long id){
 			clienteService.delete(id);
@@ -70,6 +73,7 @@ public class ClienteResource {
 		
 		//Buscar com paginação
 		//listando todas as clientes
+			@PreAuthorize("hasAnyRole('ADMIN')") 
 			@GetMapping(value="/page")
 			public ResponseEntity<Page<ClienteDTO>> findPage(
 					@RequestParam(value="page",defaultValue = "0") Integer  page,

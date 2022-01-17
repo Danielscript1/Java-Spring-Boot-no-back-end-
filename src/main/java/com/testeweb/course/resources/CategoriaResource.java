@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,7 @@ public class CategoriaResource {
 	
 	
 	//insert processo de execução
+	@PreAuthorize("hasAnyRole('ADMIN')") 
 	@PostMapping
 	public ResponseEntity<Categoria> insert(@Validated @RequestBody CategoriaDTO  objDto){ //anotacao REquestBody , faz que o json seja convertido para objeto java
 		//antes de chmar meu metodo insert, tenho que converter meu obj dto para um tipo de entity
