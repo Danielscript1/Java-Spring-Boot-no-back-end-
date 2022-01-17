@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.testeweb.course.security.JWTAuthenticationFilter;
+import com.testeweb.course.security.JWTAuthorizationFilter;
 import com.testeweb.course.security.JWTUtil;
 
 @Configuration
@@ -57,6 +58,7 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 			.antMatchers(PUBLIC_MATCHERS).permitAll() //acessando h2
 			.anyRequest().authenticated();//demais somente permissão
 			http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+			http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//segurar que nossa aplicação, não ira criar seção de usuario
 	}
 	
