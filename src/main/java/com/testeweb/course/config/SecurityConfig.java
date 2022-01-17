@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,6 +23,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 	@Autowired
 	private Environment env;
+	@Autowired
+	private UserDetailsService userDetailsService;
 	//Configuração de liberar acesso, aos endponts
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**",
@@ -49,6 +53,15 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 			.anyRequest().authenticated();//demais somente permissão
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//segurar que nossa aplicação, não ira criar seção de usuario
 	}
+	
+	
+	//Em SecurityConfig, sobrescrever o método: public void configure(AuthenticationManagerBuilder auth) 
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+	}
+	
+	
 	//liberar o acesso a meu endpoits , com configuraçoes basicas
 		@Bean
 		CorsConfigurationSource corsConfiguration() {
