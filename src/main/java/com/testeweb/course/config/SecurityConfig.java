@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.testeweb.course.security.JWTAuthenticationFilter;
+import com.testeweb.course.security.JWTUtil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
@@ -25,6 +28,8 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 	private Environment env;
 	@Autowired
 	private UserDetailsService userDetailsService;
+	@Autowired
+	private JWTUtil jwtUtil;
 	//Configuração de liberar acesso, aos endponts
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**",
@@ -51,6 +56,7 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 			.antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GET).permitAll()//somente para leitura
 			.antMatchers(PUBLIC_MATCHERS).permitAll() //acessando h2
 			.anyRequest().authenticated();//demais somente permissão
+			http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//segurar que nossa aplicação, não ira criar seção de usuario
 	}
 	

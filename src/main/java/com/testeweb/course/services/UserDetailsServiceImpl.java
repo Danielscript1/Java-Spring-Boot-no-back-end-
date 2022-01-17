@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.testeweb.course.domain.Cliente;
 import com.testeweb.course.repositories.ClienteRepository;
 import com.testeweb.course.security.UserSS;
-
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	/*---processo de autenticação---
 	 *    Criar classe de usuário conforme contrato do Spring Security (implements UserDetails) = UserSS ->contem os metodos de autenticação que vão trabalhar encima dece usuario
