@@ -92,6 +92,11 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 	
+	//restricao de acesso ao usuario, permissoes
+	public boolean hasRole(Perfil perfil) {
+		//testar se esse usuario possui o dado perfil
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
 	
 	
 }

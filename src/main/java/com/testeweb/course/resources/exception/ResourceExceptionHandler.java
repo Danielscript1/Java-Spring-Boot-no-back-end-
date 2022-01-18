@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.testeweb.course.services.exception.AuthorizationException;
 import com.testeweb.course.services.exception.DataIntegrityViolationException;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
 
@@ -42,6 +43,13 @@ public class ResourceExceptionHandler {
 			}	
 			
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+		}
+		
+		//esse metodo recebe a excecao e a requisicao, esse metodo lança a restrição de acesso negado
+		@ExceptionHandler(AuthorizationException.class)
+		public ResponseEntity<StandardError> Authorization(AuthorizationException e, HttpServletRequest request){
+			StandardError err = new  StandardError(HttpStatus.FORBIDDEN.value(),e.getMessage(), System.currentTimeMillis());
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 		}
 		
 }

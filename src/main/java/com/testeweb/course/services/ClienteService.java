@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.testeweb.course.domain.Cidade;
 import com.testeweb.course.domain.Cliente;
 import com.testeweb.course.domain.Endereco;
+import com.testeweb.course.domain.enums.Perfil;
 import com.testeweb.course.domain.enums.TipoCliente;
 import com.testeweb.course.dto.ClienteDTO;
 import com.testeweb.course.dto.ClienteNewDTO;
 import com.testeweb.course.repositories.ClienteRepository;
 import com.testeweb.course.repositories.EnderecoRepository;
+import com.testeweb.course.security.UserSS;
+import com.testeweb.course.services.exception.AuthorizationException;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
 @Service
 public class ClienteService {
@@ -34,6 +37,14 @@ public class ClienteService {
 	private  BCryptPasswordEncoder be;
 	
 	public Cliente find(Long id) {
+		
+	/*Restricao cliente so recupera as coisas associadas  a ele*/
+		
+	//se esse usuario que , eu busquei não possui o perfil de admin	
+		UserSS user = UserService.authenticated();
+		if(user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			 throw new AuthorizationException("acesso negado");
+		}
 	Optional<Cliente> cliente = clienteRepository.findById(id); //pode haver ou não um objeto com id correpodente
 	
 	/*Checklist de tratamento de exceção de id inválido:
