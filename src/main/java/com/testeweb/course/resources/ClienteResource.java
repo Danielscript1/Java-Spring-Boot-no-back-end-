@@ -35,7 +35,7 @@ public class ClienteResource {
 	private ClienteService clienteService; 
 	
 	//buscar cliente pelo Id
-	@PreAuthorize("hasAnyRole('ADMIN')") 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> buscarId(@PathVariable Long id) {
 		Cliente cliente = clienteService.find(id);
@@ -64,7 +64,7 @@ public class ClienteResource {
 		}
 		
 		//deletar
-		@PreAuthorize("hasAnyRole('ADMIN')") 
+		@PreAuthorize("hasRole('ROLE_ADMIN')")
 		@DeleteMapping(value="/{id}")
 		public ResponseEntity<Cliente> deletar(@PathVariable Long id){
 			clienteService.delete(id);
@@ -73,7 +73,7 @@ public class ClienteResource {
 		
 		//Buscar com paginação
 		//listando todas as clientes
-			@PreAuthorize("hasAnyRole('ADMIN')") 
+		@PreAuthorize("hasRole('ROLE_ADMIN')")
 			@GetMapping(value="/page")
 			public ResponseEntity<Page<ClienteDTO>> findPage(
 					@RequestParam(value="page",defaultValue = "0") Integer  page,

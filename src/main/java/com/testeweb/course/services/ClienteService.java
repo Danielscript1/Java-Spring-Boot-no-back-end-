@@ -42,7 +42,7 @@ public class ClienteService {
 		
 	//se esse usuario que , eu busquei não possui o perfil de admin	
 		UserSS user = UserService.authenticated();
-		if(user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			 throw new AuthorizationException("acesso negado");
 		}
 	Optional<Cliente> cliente = clienteRepository.findById(id); //pode haver ou não um objeto com id correpodente

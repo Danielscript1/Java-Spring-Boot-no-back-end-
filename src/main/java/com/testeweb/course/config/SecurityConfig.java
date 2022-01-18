@@ -63,13 +63,13 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 		//liberando acessos
 		http.cors().and().csrf().disable();
 		http.authorizeRequests()
-			.antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_POST).permitAll()//somente para leitura
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()//somente para leitura
 			.antMatchers(HttpMethod.GET,PUBLIC_MATCHERS_GET).permitAll()//somente para leitura
 			.antMatchers(PUBLIC_MATCHERS).permitAll() //acessando h2
 			.anyRequest().authenticated();//demais somente permissão
 			http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 			http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//segurar que nossa aplicação, não ira criar seção de usuario
+			http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//segurar que nossa aplicação, não ira criar seção de usuario
 	}
 	
 	
