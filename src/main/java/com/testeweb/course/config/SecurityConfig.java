@@ -48,7 +48,8 @@ public class SecurityConfig extends  WebSecurityConfigurerAdapter  {
 	
 	//criar outro vetor , com os caminhos para usuario se cadastrar
 		private static final String[] PUBLIC_MATCHERS_POST = {
-				"/clientes/**"
+				"/clientes/**",
+				"/auth/forgot/**"
 			
 		};
 		
