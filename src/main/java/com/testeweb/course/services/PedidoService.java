@@ -1,12 +1,16 @@
-package com.testeweb.course.services;
+	package com.testeweb.course.services;
 
 import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.testeweb.course.domain.Cliente;
 import com.testeweb.course.domain.ItemPedido;
 import com.testeweb.course.domain.PagamentoComBoleto;
 import com.testeweb.course.domain.Pedido;
@@ -15,6 +19,8 @@ import com.testeweb.course.repositories.ClienteRepository;
 import com.testeweb.course.repositories.ItemPedidoRepository;
 import com.testeweb.course.repositories.PagamentoRepository;
 import com.testeweb.course.repositories.PedidoRepository;
+import com.testeweb.course.security.UserSS;
+import com.testeweb.course.services.exception.AuthorizationException;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
 
 @Service
@@ -77,4 +83,22 @@ public class PedidoService {
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
 	}
+	 
+	 //regra de negocios , so vai recupera os pedidos associados a ele
+	 public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		 UserSS user = UserService.authenticated();
+		 //verificar se o cara não esta autenticado
+		 if(user == null) {
+			 throw new AuthorizationException("Acesso negado!");
+		 }
+		 PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		 //pegar o cliente autenticado
+		 Cliente cliente = clienteService.find(user.getId());
+		 
+		 return pedidoRepository.findByCliente(cliente, pageRequest);
+		 
+	 }
+	 
+	 
+	 
 }
