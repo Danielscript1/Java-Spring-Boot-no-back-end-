@@ -257,7 +257,7 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		
 		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));	
 		
-		s3Service.uploadFile("C:\\temp\\fotos\\foto.jpg");
+		
 	
 	}
 
