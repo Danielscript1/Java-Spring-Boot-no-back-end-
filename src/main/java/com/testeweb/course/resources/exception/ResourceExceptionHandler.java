@@ -8,8 +8,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.testeweb.course.services.exception.AuthorizationException;
 import com.testeweb.course.services.exception.DataIntegrityViolationException;
+import com.testeweb.course.services.exception.FileException;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
 
 //status http
@@ -52,4 +56,32 @@ public class ResourceExceptionHandler {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 		}
 		
+		//esse metodo recebe a excecao e a requisicao, esse metodo lança exception arquivo
+		@ExceptionHandler(FileException.class)
+		public ResponseEntity<StandardError> file(FileException e, HttpServletRequest request){
+			StandardError err = new  StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(), System.currentTimeMillis());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+		}
+		
+		//esse metodo recebe a excecao e a requisicao, esse metodo lança exception amazonService
+		@ExceptionHandler(AmazonServiceException .class)
+		public ResponseEntity<StandardError> AmazonService(AmazonServiceException e, HttpServletRequest request){
+			HttpStatus code = HttpStatus.valueOf(e.getErrorCode());// pegar o status de erro da amazon
+			StandardError err = new  StandardError(code.value(),e.getMessage(), System.currentTimeMillis());
+			return ResponseEntity.status(code).body(err);
+		}
+		
+		//esse metodo recebe a excecao e a requisicao, esse metodo lança exception amazonClienteExcption
+				@ExceptionHandler(AmazonClientException.class)
+				public ResponseEntity<StandardError> AmazonClient(AmazonClientException e, HttpServletRequest request){
+					StandardError err = new  StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(), System.currentTimeMillis());
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+				}
+				
+				//esse metodo recebe a excecao e a requisicao, esse metodo lança exception AmazonS3Exception
+				@ExceptionHandler(AmazonS3Exception.class)
+				public ResponseEntity<StandardError> AmazonS3(AmazonS3Exception e, HttpServletRequest request){
+					StandardError err = new  StandardError(HttpStatus.BAD_REQUEST.value(),e.getMessage(), System.currentTimeMillis());
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+				}	
 }
