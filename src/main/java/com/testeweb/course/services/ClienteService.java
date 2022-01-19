@@ -45,7 +45,8 @@ public class ClienteService {
 	private ImageService imageService;
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-	
+	@Value("${img.profile.size}")
+	private Integer size;
 	public Cliente find(Long id) {
 		
 	/*Restricao cliente so recupera as coisas associadas  a ele*/
@@ -152,10 +153,12 @@ public class ClienteService {
 			}
 			
 			
-		
 			
 			//teste de verificação para saber qual tipo de extensao esta vindo
 			 BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+			 jpgImage = imageService.cropSquare(jpgImage);
+				jpgImage = imageService.resize(jpgImage, size);
+				
 			//proximo passo, montar o nome do arquivo pensonalizando
 				String fileName = prefix + user.getId() + ".jpg";
 

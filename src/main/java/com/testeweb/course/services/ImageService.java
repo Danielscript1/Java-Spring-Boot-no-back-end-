@@ -1,6 +1,7 @@
 package com.testeweb.course.services;
 
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
@@ -54,5 +55,20 @@ public class ImageService {
 			} catch (IOException e) {
 				throw new FileException("Erro ao ler arquivo");
 			}
+		}
+		//manipulação com imagem funcao para cortar
+		public BufferedImage cropSquare(BufferedImage sourceImg) {
+			int min = (sourceImg.getHeight() <= sourceImg.getWidth()) ? sourceImg.getHeight() : sourceImg.getWidth();
+			return Scalr.crop(
+				sourceImg, 
+				(sourceImg.getWidth()/2) - (min/2), 
+				(sourceImg.getHeight()/2) - (min/2), 
+				min, 
+				min);		
+		}
+		
+		//funçao para redimensionar
+		public BufferedImage resize(BufferedImage sourceImg, int size) {
+			return Scalr.resize(sourceImg, Scalr.Method.ULTRA_QUALITY, size);
 		}
 }
