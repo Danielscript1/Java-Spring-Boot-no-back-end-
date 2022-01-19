@@ -80,8 +80,11 @@ public class Cliente implements Serializable{
 	@OneToMany(mappedBy = "cliente")
 	@JsonIgnore
 	private List<Pedido>pedidos = new ArrayList<>();
-
+	
 	//fim das associaçoes
+	
+	//atributo de img
+	private String imageUrl;
 	
 	//construtores
 	public Cliente() {
@@ -198,8 +201,20 @@ public class Cliente implements Serializable{
 		this.senha = senha;
 	}
 
-	//hasCode equals
 
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+
+	//hasCode equals
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
