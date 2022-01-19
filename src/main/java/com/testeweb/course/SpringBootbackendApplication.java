@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.testeweb.course.domain.Categoria;
@@ -33,6 +32,7 @@ import com.testeweb.course.repositories.ItemPedidoRepository;
 import com.testeweb.course.repositories.PagamentoRepository;
 import com.testeweb.course.repositories.PedidoRepository;
 import com.testeweb.course.repositories.ProdutoRepository;
+import com.testeweb.course.services.S3Service;
 
 @SpringBootApplication
 public class SpringBootbackendApplication implements CommandLineRunner {
@@ -58,6 +58,8 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	@Autowired
+	private S3Service s3Service;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootbackendApplication.class, args);
@@ -255,7 +257,8 @@ public class SpringBootbackendApplication implements CommandLineRunner {
 		
 		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));	
 		
-		
+		s3Service.uploadFile("C:\\temp\\fotos\\foto.jpg");
+	
 	}
 
 }
