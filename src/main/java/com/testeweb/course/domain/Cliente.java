@@ -83,8 +83,7 @@ public class Cliente implements Serializable{
 	
 	//fim das associaçoes
 	
-	//atributo de img
-	private String imageUrl;
+	
 	
 	//construtores
 	public Cliente() {
@@ -203,15 +202,7 @@ public class Cliente implements Serializable{
 
 
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
 
-
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
 
 
 	//hasCode equals

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ import com.testeweb.course.repositories.EnderecoRepository;
 import com.testeweb.course.security.UserSS;
 import com.testeweb.course.services.exception.AuthorizationException;
 import com.testeweb.course.services.exception.ObjectNotFoundException;
+import java.awt.image.BufferedImage;
 @Service
 public class ClienteService {
 	
@@ -39,6 +41,10 @@ public class ClienteService {
 	private  BCryptPasswordEncoder be;
 	@Autowired
 	private S3Service s3Service;
+	@Autowired
+	private ImageService imageService;
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 	
 	public Cliente find(Long id) {
 		
@@ -145,13 +151,15 @@ public class ClienteService {
 				throw new AuthorizationException("Acesso negado!");
 			}
 			
-			 URI uri = s3Service.uploadFile(multipartFile);
 			
-			//buscar o cliente pelo id
-			Cliente cli = clienteRepository.getById(user.getId());
-			cli.setImageUrl(uri.toString());
-			clienteRepository.save(cli);
-			return uri;
+		
+			
+			//teste de verificação para saber qual tipo de extensao esta vindo
+			 BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+			//proximo passo, montar o nome do arquivo pensonalizando
+				String fileName = prefix + user.getId() + ".jpg";
+
+				return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 		}
 		
 }
