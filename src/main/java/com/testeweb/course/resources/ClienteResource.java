@@ -44,6 +44,13 @@ public class ClienteResource {
 	}
 	
 	
+	//buscar cliente por email
+	@RequestMapping(value="/email", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> find(@RequestParam(value="value") String email) {
+		Cliente obj = clienteService.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	//insert processo de execução
 		@PostMapping
 		public ResponseEntity<Cliente> insert(@Validated @RequestBody ClienteNewDTO  objDto){ //anotacao REquestBody , faz que o json seja convertido para objeto java

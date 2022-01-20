@@ -106,6 +106,25 @@ public class ClienteService {
 		return clienteRepository.findAll();
 	}
 	
+	//buscar cliente por email
+	public Cliente findByEmail(String email) {
+		
+		UserSS user = UserService.authenticated();
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado!");
+		}
+		
+		//busco o cliente por email
+		Cliente obj = clienteRepository.findByEmail(email);
+		if(obj == null ) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado ! Id: "+user.getId()+", Tipo: "+Cliente.class.getName()
+					);
+		}
+		return obj;
+		
+	}
+	
 	//adicionando paginação
 	public Page<Cliente>findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
 		//obj que vai prepara minha informaçoes, para fzer a consulta
