@@ -1,5 +1,6 @@
 package com.testeweb.course.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class EstadoService {
 	
 	return estado.orElseThrow(() -> new ObjectNotFoundException( //lançar minha exception pensonalizada
 			 "Objeto não encontrado! Id: " + id + ", Tipo: " + Estado.class.getName()));
+	}
+	
+	//buscar todos os estados
+	public List<Estado> findAll(){
+		return estadoRepository.findAllByOrderByNome();
 	}
 
 }
